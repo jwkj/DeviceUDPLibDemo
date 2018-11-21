@@ -14,7 +14,7 @@ app/build.gradle中加入
 dependencies {
        ...
        //UDP功能模块库
-       compile 'com.jwkj:DeviceUDPLib:v1.0.9'
+       compile 'com.jwkj:UDPUtilsLib:v1.1.1'
        //UDP基础库（不可少）
        compile 'com.jwkj:udpsender:v2.0.2'
    }
@@ -174,30 +174,61 @@ SoundWaveSender.getInstance().stopSend();
 ![](http://onkrb3tob.bkt.clouddn.com/ap4.png)
 
 ```java
-APManager.getInstance()
-                .with(this)
-                .setApDeviceConfig(new APDeviceConfig(apWifiSSID, "", devicePwd))
-                .send(new ResultCallback() {
-                    @Override
-                    public void onStart() {
-                        ELog.e("任务开始了");
-                    }
+ deviceConfig = new APDeviceConfig(wifiSSID, wifiPwd, apWifiSSID, devicePwd);
+ String deviceId = apWifiSSID.substring(6);
+ deviceConfig.setDeviceID(deviceId);
+ APManager.getInstance()
+         .with(this)
+         .setApDeviceConfig(deviceConfig)
+         .send(new ResultCallback() {
+             @Override
+             public void onStart() {
+                 ELog.e("任务开始了");
+                 Message msg = Message.obtain();
+                 msg.what = ON_START;
+                 Bundle data = new Bundle();
+                 data.putString("result_data","\n\n任务开始了...");
+                 msg.setData(data);
+                 mHandler.sendMessage(msg);
+             }
 
-                    @Override
-                    public void onConfigPwdSuccess() {
-                        ELog.e("配置wifi成功了");
-                        try {
-                            WifiUtils.getInstance().with(APConfigActivity.this).connectWifi(wifiSSID, wifiPwd, wifiType);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            ELog.e("连接之前的wifi出错了");
-                        }
-                    }
+             @Override
+             public void onStateChange(String deviceId, int stateCode) {
+                 if (0 == stateCode) {
+                     Message msg = Message.obtain();
+                     msg.what = ON_STATE_CHANGE;
+                     Bundle data = new Bundle();
+                     data.putString("result_data","\n\n设备"+deviceId+"收到wifi名字和密码了");
+                     msg.setData(data);
+                     mHandler.sendMessage(msg);
+                     Log.e("hdltag", "onNext(APManager.java:140):设备收到wifi名字和密码了");
+                     Log.e("hdltag", "onNext(APManager.java:141):设备已经收到了，停止接收，然后再发送确认wifi");
+                 }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        ELog.e("任务出错了" + throwable);
-                    }
-                });
+             }
+
+             @Override
+             public void onConfigPwdSuccess(String deviceId, int stateCode) {
+                 ELog.e("配置wifi成功了");
+
+                 Message msg = Message.obtain();
+                 msg.what = ON_SUCCESS;
+                 Bundle data = new Bundle();
+                 data.putString("result_data","\n\n设备："+deviceId+"配置wifi成功了");
+                 msg.setData(data);
+                 mHandler.sendMessage(msg);
+             }
+
+             @Override
+             public void onError(Throwable throwable) {
+                 ELog.e("任务出错了" + throwable);
+                 Message msg = Message.obtain();
+                 msg.what = ON_ERROR;
+                 Bundle data = new Bundle();
+                 data.putString("result_data","\n任务出错了:\n"+throwable.getMessage());
+                 msg.setData(data);
+                 mHandler.sendMessage(msg);
+             }
+         });
 ```
 
