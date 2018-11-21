@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     defaultConfig {
         applicationId "hdl.com.deviceudplibdemo"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -16,15 +16,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     //UDP功能模块库
-    compile 'com.jwkj:DeviceUDPLib:v1.0.9'
+    compile 'com.jwkj:UDPUtilsLib:v1.1.1'
     //UDP基础库（不可少）
     compile 'com.jwkj:udpsender:v2.0.2'
     compile 'com.p2p.core:p2p-core:0.4.3'

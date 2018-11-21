@@ -47,24 +47,40 @@
         android:textColor="@android:color/holo_blue_light"
         android:textSize="18sp" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="请选择需要配网的设备：" />
+        android:gravity="center_vertical"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择需要配网的设备：" />
+        <TextView
+            android:id="@+id/select_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="18sp" />
+    </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_ap_list"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="5dp" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <Button
@@ -94,8 +110,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
-
+        android:layout_margin="10dp"
+        >
         <TextView
             android:id="@+id/tv_apconfig_log"
             android:layout_width="match_parent"

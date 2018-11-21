@@ -44,7 +44,7 @@
         android:background="@drawable/shape_input_bg"
         android:hint="输入wifi密码"
         android:padding="10dp"
-        android:text="29088360" />
+        />
 
     <EditText
         android:id="@+id/et_device_pwd"
@@ -56,7 +56,7 @@
         android:hint="输入设备密码"
         android:visibility="gone"
         android:padding="10dp"
-        android:text="hdl123456" />
+        />
 
     <Button
         android:id="@+id/btn_start"
